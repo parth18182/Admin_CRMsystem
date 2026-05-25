@@ -13,7 +13,7 @@ function Products() {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [open]);
 
   const getProducts = async () => {
     try {

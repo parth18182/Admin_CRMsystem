@@ -11,7 +11,7 @@ function Cities() {
 
   useEffect(() => {
     getCities();
-  }, []);
+  }, [open]);
 
   const getCities = async () => {
     try {

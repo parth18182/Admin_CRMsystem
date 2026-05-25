@@ -12,7 +12,7 @@ function Users() {
 
   useEffect(() => {
     getUsers();
-  }, []);
+  }, [open]);
 
   const getUsers =
     async () => {

@@ -4,25 +4,20 @@ import AreaForm from "../components/AreaForm";
 
 function Areas() {
   const [cities, setCities] = useState([]);
-
   const [areas, setAreas] = useState([]);
-
   const [selectedCity, setSelectedCity] = useState("");
-
   const [open, setOpen] = useState(false);
-
   const [editData, setEditData] = useState(null);
 
   useEffect(() => {
     getCities();
-  }, []);
+  }, [open]);
 
   const getCities = async () => {
     try {
       const res = await axios.get(
         "https://asgcrm-production.up.railway.app/cities",
       );
-
       setCities(res.data);
     } catch (error) {
       console.log(error.response?.data || error.message);
