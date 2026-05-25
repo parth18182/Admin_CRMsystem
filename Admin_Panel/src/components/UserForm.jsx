@@ -74,7 +74,7 @@ function UserForm({ setOpen }) {
         <div className="mb-6 flex justify-between">
           <h1 className="text-2xl font-bold text-white">Add User</h1>
 
-          <button onClick={() => setOpen(false)} className="text-red-400">
+          <button onClick={() => setOpen(false)} className="text-red-400 cursor-pointer">
             ✕
           </button>
         </div>
@@ -136,6 +136,7 @@ function UserForm({ setOpen }) {
             bg-violet-600
             py-4
             text-white
+            cursor-pointer
             hover:bg-violet-700
             disabled:opacity-50
             "

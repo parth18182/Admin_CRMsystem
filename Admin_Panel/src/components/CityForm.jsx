@@ -1,61 +1,50 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-function CityForm({ setOpen }) {
+function CityForm({ setOpen, editData, refresh }) {
+  const [name, setName] = useState("");
 
-  const [name, setName] =
-    useState("");
+  const [loading, setLoading] = useState(false);
 
-  const [loading, setLoading] =
-    useState(false);
+  useEffect(() => {
+    if (editData) {
+      setName(editData.name);
+    }
+  }, [editData]);
 
   const submit = async () => {
-
-    if (!name) {
-      alert(
-        "City name required"
-      );
-
-      return;
+    if (name.length === 0) {
+      return alert("City name required");
     }
 
     try {
-
       setLoading(true);
 
-      const res =
+      if (editData) {
+        await axios.put(
+          `https://asgcrm-production.up.railway.app/admin/cities/${editData.id}`,
+          {
+            name,
+          },
+        );
+      } else {
         await axios.post(
           "https://asgcrm-production.up.railway.app/admin/cities",
           {
             name,
-          }
+          },
         );
+      }
 
-      console.log(
-        "Success:",
-        res.data
-      );
+      refresh();
 
       setName("");
 
       setOpen(false);
-
     } catch (error) {
-
-      console.log(
-        "API Error:",
-        error.response?.data ||
-        error.message
-      );
-
-      alert(
-        "Failed to create city"
-      );
-
+      console.log(error.response?.data || error.message);
     } finally {
-
       setLoading(false);
-
     }
   };
 
@@ -63,48 +52,42 @@ function CityForm({ setOpen }) {
     <div
       className="
       fixed inset-0
-      flex items-center justify-center
+      flex items-center
+      justify-center
       bg-black/70
       "
     >
-
       <div
         className="
         w-full
         max-w-lg
         rounded-3xl
+        border border-white/10
         bg-[#161625]
         p-8
-        border border-white/10
         "
       >
-
         <div className="mb-6 flex justify-between">
-
           <h1 className="text-2xl font-bold text-white">
-            Add City
+            {editData ? "Update City" : "Add City"}
           </h1>
 
           <button
-            onClick={() =>
-              setOpen(false)
-            }
-            className="text-red-400"
+            onClick={() => setOpen(false)}
+            className="
+            text-red-400
+            text-xl
+            cursor-pointer
+            "
           >
             ✕
           </button>
-
         </div>
 
         <div className="space-y-5">
-
           <input
             value={name}
-            onChange={(e) =>
-              setName(
-                e.target.value
-              )
-            }
+            onChange={(e) => setName(e.target.value)}
             placeholder="City Name"
             className="
             w-full
@@ -113,12 +96,13 @@ function CityForm({ setOpen }) {
             bg-white/5
             p-4
             text-white
+            outline-none
             "
           />
 
           <button
-            onClick={submit}
             disabled={loading}
+            onClick={submit}
             className="
             w-full
             rounded-xl
@@ -127,19 +111,13 @@ function CityForm({ setOpen }) {
             text-white
             hover:bg-violet-700
             disabled:opacity-50
+            cursor-pointer
             "
           >
-            {
-              loading
-              ? "Saving..."
-              : "Save City"
-            }
+            {loading ? "Saving..." : editData ? "Update City" : "Save City"}
           </button>
-
         </div>
-
       </div>
-
     </div>
   );
 }

@@ -5,11 +5,13 @@ import AreaForm from "../components/AreaForm";
 function Areas() {
   const [cities, setCities] = useState([]);
 
-  const [selectedCity, setSelectedCity] = useState("");
-
   const [areas, setAreas] = useState([]);
 
+  const [selectedCity, setSelectedCity] = useState("");
+
   const [open, setOpen] = useState(false);
+
+  const [editData, setEditData] = useState(null);
 
   useEffect(() => {
     getCities();
@@ -20,9 +22,10 @@ function Areas() {
       const res = await axios.get(
         "https://asgcrm-production.up.railway.app/cities",
       );
+
       setCities(res.data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data || error.message);
     }
   };
 
@@ -34,7 +37,19 @@ function Areas() {
 
       setAreas(res.data);
     } catch (error) {
-      console.log(error);
+      console.log(error.response?.data || error.message);
+    }
+  };
+
+  const deleteArea = async (id) => {
+    try {
+      await axios.delete(
+        `https://asgcrm-production.up.railway.app/admin/areas/${id}`,
+      );
+
+      getAreas(selectedCity);
+    } catch (error) {
+      console.log(error.response?.data || error.message);
     }
   };
 
@@ -44,12 +59,17 @@ function Areas() {
         <h1 className="text-3xl font-bold text-white">Areas</h1>
 
         <button
-          onClick={() => setOpen(true)}
+          onClick={() => {
+            setEditData(null);
+
+            setOpen(true);
+          }}
           className="
           rounded-xl
           bg-violet-600
           px-6 py-3
           text-white
+          hover:bg-violet-700
           "
         >
           + Add Area
@@ -96,11 +116,51 @@ function Areas() {
               "
           >
             <h2 className="text-xl font-bold text-white">📍 {area.name}</h2>
+
+            <div className="mt-5 flex gap-3">
+              <button
+                onClick={() => {
+                  setEditData(area);
+
+                  setOpen(true);
+                }}
+                className="
+                  flex-1
+                  rounded-xl
+                  bg-cyan-600
+                  py-2
+                  text-white
+                  cursor-pointer
+                  "
+              >
+                Update
+              </button>
+
+              <button
+                onClick={() => deleteArea(area.id)}
+                className="
+                  flex-1
+                  rounded-xl
+                  bg-red-600
+                  py-2
+                  text-white
+                  cursor-pointer
+                  "
+              >
+                Delete
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
-      {open && <AreaForm setOpen={setOpen} />}
+      {open && (
+        <AreaForm
+          setOpen={setOpen}
+          editData={editData}
+          refresh={() => getAreas(selectedCity)}
+        />
+      )}
     </div>
   );
 }

@@ -8,15 +8,7 @@ function Dashboard() {
       <Sidebar />
 
       <div className="flex-1 overflow-hidden">
-        <div
-          className="
-          border-b
-          border-white/10
-          bg-white/5
-          px-8
-          py-5
-          "
-        >
+        <div className="border-b border-white/10 bg-white/5 px-8 py-5">
           <h1 className="text-3xl font-bold text-white">
             Admin Dashboard
           </h1>
@@ -26,7 +18,7 @@ function Dashboard() {
           </p>
         </div>
         <div
-          className="h-[calc(100vh-100px)] overflow-hidden p-8
+          className="h-[calc(100vh-110px)] overflow-hidden p-8
           "
         >
           <Outlet />

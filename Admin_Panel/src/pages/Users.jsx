@@ -51,6 +51,7 @@ function Users() {
             setOpen(true)
           }
           className="
+          cursor-pointer
           rounded-xl
           bg-violet-600
           px-6 py-3

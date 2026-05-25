@@ -13,7 +13,7 @@ function Sidebar() {
       backdrop-blur-xl
       "
     >
-      <h1 className="mb-10 text-3xl font-bold text-white">
+      <h1 className="mb-10 text-3xl text-center shadow-lg p-2 rounded-2xl border border-purple-900 shadow-purple-950 font-bold text-white">
         Admin CRM
       </h1>
 
